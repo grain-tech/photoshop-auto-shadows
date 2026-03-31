@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-bridge-for-photoshop": {
+      "source": "agent-bridge-for-photoshop.jaredverdi.com",
+      "sourceType": "well-known",
+      "computedHash": "9639082b4d0f8b68441b3f2bcaaf602c0a47e2a53d097b5aa25a4dbd35ec6c4a"
+    }
+  }
+}
