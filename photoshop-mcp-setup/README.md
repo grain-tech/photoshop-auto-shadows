@@ -102,15 +102,15 @@ Add to `~/.claude/settings.json`:
 {
   "mcpServers": {
     "adobe-photoshop": {
-      "command": "/Users/YOUR_USERNAME/.00bx-photoshop-mcp/mcp/.venv/bin/python",
-      "args": ["/Users/YOUR_USERNAME/.00bx-photoshop-mcp/mcp/ps-mcp.py"],
+      "command": "$HOME/.00bx-photoshop-mcp/mcp/.venv/bin/python",
+      "args": ["$HOME/.00bx-photoshop-mcp/mcp/ps-mcp.py"],
       "timeout": 30000
     }
   }
 }
 ```
 
-Replace `YOUR_USERNAME` with your macOS username.
+Claude Code will expand `$HOME` automatically. If your shell doesn't, replace with your full home path (e.g. `/Users/yourname`).
 
 ## Usage (every session)
 

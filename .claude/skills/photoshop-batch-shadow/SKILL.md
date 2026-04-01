@@ -21,7 +21,7 @@ If not set up, see `photoshop-mcp-setup/README.md` for installation instructions
 
 ## How it works
 
-The batch script at `~/Downloads/sku-batch/batch_shadow.py` connects to Photoshop via a WebSocket proxy and for each image:
+The batch script connects to Photoshop via a WebSocket proxy and for each image:
 
 1. Opens the image in Photoshop
 2. Expands the canvas (to prevent shadow cutoff)
@@ -51,7 +51,7 @@ These settings were extracted from the reference file `Abalone Yu Sheng (shadow)
 ### Folder structure
 
 ```
-~/Downloads/sku-batch/
+<working-dir>/
 ├── input/           ← source images (any subfolder structure)
 ├── output-psd/      ← PSD outputs
 ├── output-png/      ← PNG outputs
@@ -61,7 +61,7 @@ These settings were extracted from the reference file `Abalone Yu Sheng (shadow)
 ### Execution
 
 ```bash
-~/.00bx-photoshop-mcp/mcp/.venv/bin/python ~/Downloads/sku-batch/batch_shadow.py
+~/.00bx-photoshop-mcp/mcp/.venv/bin/python batch_shadow.py
 ```
 
 ### Customizing
