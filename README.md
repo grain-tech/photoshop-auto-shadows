@@ -16,4 +16,4 @@ Follow the [Photoshop MCP setup guide](photoshop-mcp-setup/README.md) to install
 
 - **Setup guide** (`photoshop-mcp-setup/README.md`) — step-by-step installation for the Photoshop MCP server
 - **Batch shadow skill** (`.claude/skills/photoshop-batch-shadow/`) — teaches Claude Code how to batch process product images with drop shadows
-- **Agent Bridge skill** (`.agents/skills/agent-bridge-for-photoshop/`) — teaches Claude Code how to use Agent Bridge for Photoshop automation
+- **Agent Bridge skill** (`.claude/skills/agent-bridge-for-photoshop/`) — teaches Claude Code how to use Agent Bridge for Photoshop automation
