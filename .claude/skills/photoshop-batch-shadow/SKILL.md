@@ -29,9 +29,23 @@ The batch script connects to Photoshop via a WebSocket proxy and for each image:
 4. Saves as PSD and PNG to separate output folders
 5. Closes the document
 
-## Default shadow settings
+## Shadow presets
 
-These settings were extracted from the reference file `Abalone Yu Sheng (shadow).psd`:
+There are two shadow presets. The script auto-detects which to use based on whether the image contains a wooden board.
+
+### Detection logic
+
+Before applying a shadow, the script should determine the image type:
+1. Open the image in Photoshop
+2. Take a screenshot/thumbnail or analyze the image visually
+3. If the image features a **wooden board** (wooden platter, chopping board, wooden tray) → use **Wooden Board** preset
+4. All other images (plates, bowls, standalone products, white backgrounds) → use **Non Wooden Board** preset
+
+When building the batch script, use Claude's vision capability to classify each image before processing. Save a thumbnail/screenshot and pass it to the LLM with the prompt: "Does this product image feature a wooden board/platter? Reply YES or NO."
+
+### Non Wooden Board preset (default)
+
+Reference: `Abalone Yu Sheng (shadow).psd`
 
 | Setting | Value |
 |---------|-------|
@@ -45,6 +59,27 @@ These settings were extracted from the reference file `Abalone Yu Sheng (shadow)
 | Noise | 3% |
 | Contour | Linear |
 | Layer Effects Scale | 400% |
+
+### Wooden Board preset
+
+Reference: `Orh Nee Hokkaido Cheese Tart (shadow) - 2.psd`
+
+| Setting | Value |
+|---------|-------|
+| Blend Mode | Normal |
+| Color | Near-black (RGB ~0.8, 1.1, 1.1) |
+| Opacity | 80% |
+| Angle | 130° (not global light) |
+| Distance | 45px |
+| Spread | 0px |
+| Size (blur) | 30px |
+| Noise | 3% |
+| Contour | Linear |
+| Layer Effects Scale | 400% |
+
+### Key differences
+
+The wooden board preset uses a **tighter shadow** (distance 45px vs 150px, blur 30px vs 50px) since wooden boards sit closer to the surface.
 
 ## Running the batch
 
@@ -66,7 +101,7 @@ These settings were extracted from the reference file `Abalone Yu Sheng (shadow)
 
 ### Customizing
 
-To change shadow settings, modify the `DROP_SHADOW_SETTINGS` dict in `batch_shadow.py`.
+The script should define two shadow setting dicts: `SHADOW_WOODEN_BOARD` and `SHADOW_NON_WOODEN_BOARD`. For each image, detect the type and select the appropriate preset.
 
 To change the canvas expansion (default +1000px each side), modify the `resizeCanvas` call width/height values in `process_image()`.
 
