@@ -19,35 +19,44 @@ Before running, verify:
 
 If not set up, see `photoshop-mcp-setup/README.md` for installation instructions.
 
-## How it works
+## CRITICAL: Step-by-step procedure for EVERY image
 
-For each image in the batch:
+You MUST follow ALL of these steps IN ORDER for EACH image. Do NOT skip any step.
 
-1. **Detect image type** — visually inspect the source image to classify as "wooden board" or "non wooden board"
-2. Open the image in Photoshop
-3. Expand the canvas (to prevent shadow cutoff) — **important: expand the artboard/canvas FIRST, not the image. The image layer stays its original size inside a larger canvas, so the shadow has room to render and the image content is not cropped.**
-4. Apply the correct drop shadow preset via batchPlay
-5. Save as PSD and PNG to separate output folders
-6. Close the document
+### Step 1: DETECT image type (MANDATORY — do this FIRST)
 
-**Canvas expansion**: Add +3000px to each side (total +6000px per dimension). This is necessary because the layer effects scale is 400%, which multiplies shadow distance and blur. The extra space also prevents the product from appearing edge-to-edge in the final output and ensures the shadow (which falls bottom-right at 130°) is not clipped.
+Before opening in Photoshop, before doing ANYTHING else:
+
+1. **Use the Read tool** to read the source image file (the Read tool supports PNG/JPG images and will show you the image visually)
+2. Look at the image and classify it as one of:
+   - **"wooden board"** — food/product sitting on a wooden board, wooden platter, chopping board, or wooden tray
+   - **"non wooden board"** — everything else (plates, bowls, standalone products, white/light backgrounds, non-wood trays)
+3. **Say out loud** which type you detected and which preset you will use, e.g.: "This is a wooden board image → using Wooden Board preset (distance 45, blur 30)"
+
+⚠️ Do NOT skip this step. Do NOT assume all images are the same type. Do NOT default to one preset.
+
+### Step 2: EXPAND the canvas (MANDATORY)
+
+After opening the image in Photoshop:
+
+1. Get the current document width and height
+2. Add +3000px to EACH side: `new_width = width + 6000`, `new_height = height + 6000`
+3. Use the `resizeCanvas` action with `anchor: "MIDDLECENTER"`
+4. **Verify** the resize succeeded before continuing
+
+⚠️ The canvas MUST be expanded BEFORE applying the shadow. Without this, the shadow WILL be cut off in the exported PNG. The layer effects scale is 400%, so a 150px distance becomes 600px effective — the shadow extends far beyond the image.
+
+### Step 3: Apply the CORRECT shadow preset
+
+Use the batchPlay command matching the type detected in Step 1:
+- **Non Wooden Board** → distance: 150, blur: 50
+- **Wooden Board** → distance: 45, blur: 30
+
+### Step 4: Save and close
+
+Save as PSD and PNG to the output folders, then close the document.
 
 ## Shadow presets
-
-There are two shadow presets. **You MUST auto-detect which preset to use for each image before applying the shadow.**
-
-### Detection logic (MANDATORY)
-
-For EVERY image, before applying any shadow, you MUST:
-
-1. **Read the source image file** using the Read tool (it supports images) to visually inspect it
-2. Classify the image:
-   - **Wooden Board**: image shows food/product on a wooden board, wooden platter, chopping board, or wooden tray
-   - **Non Wooden Board**: everything else — plates, bowls, standalone products, white backgrounds, trays that aren't wood
-3. Select the matching shadow preset
-4. Log which preset was chosen for each image
-
-Do NOT skip detection. Do NOT default to one preset for all images.
 
 ### Non Wooden Board preset (default)
 
@@ -227,6 +236,6 @@ result = send_command("executeBatchPlayCommand", {"commands": commands})
 ## Troubleshooting
 
 - **Timeout on canvas resize**: Use `resizeCanvas` action (built-in) instead of batchPlay `canvasSize`
-- **Shadow cutoff**: Increase canvas expansion before applying shadow (default 1000px each side)
+- **Shadow cutoff**: Canvas was not expanded enough — must add +3000px each side (total +6000px per dimension) BEFORE applying shadow. The 400% layer effects scale means shadow extends much further than the raw distance value.
 - **"No clients registered"**: Reload the UXP plugin and click Connect in the PS panel
 - **Plugin crash after close**: The close command may error after saveDocumentAs changes the doc name — this is harmless and handled by the script
